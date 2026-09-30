@@ -2,7 +2,7 @@
 
 **Heard something? Pull up a seat.**
 
-An Expo + React Native mobile app for following the conversation and the context behind it. This repository contains the first interactive **local demo**, not a live public rumor service.
+An Expo + React Native mobile app for following the conversation and the context behind it. This repository contains an interactive fictional demo and a Supabase account/community integration for early testing. It is not a launched public service.
 
 <img src="docs/previews/feed.png" alt="Rumorly mobile feed preview" width="390" />
 
@@ -13,13 +13,15 @@ An Expo + React Native mobile app for following the conversation and the context
 - Heat up / cool down: one changeable vote, never a truth score.
 - Story details with a chronological update timeline.
 - Follow/unfollow stories and a following feed.
-- New story and context forms with validation and pending local submissions.
+- New story and context forms with validation and pending submissions.
+- Email-code signup/sign-in, account-scoped data, session restoration, and sign-out.
+- Supabase-backed votes, follows, profiles, reports, blocks, and an operator review queue after database setup.
 - Report/hide stories, block/unblock authors, and free correction paths.
 - Profile editing, local device persistence, and a complete demo-data reset.
 - Rumorly Plus concept screen; no purchases or billing.
 - Shared iOS, Android, and web components, plus CI checks.
 
-All seed stories, programs, and accounts are fictional. User-entered text is stored only on the device. Reports are **not sent to moderators**. There is no backend, authentication, real-time feed, push service, or subscription integration yet. No secrets or account credentials are required to run the demo.
+All demo stories, programs, and accounts are fictional. Guest actions stay on the device. Signed-in actions use Supabase; stories/context stay pending until approved, and reports enter a private database queue. The database migration and email templates must be applied before account testing; see [SUPABASE.md](docs/SUPABASE.md) for the verified setup status and exact steps. No billing or push service is active.
 
 ## Run on your phone
 
@@ -29,6 +31,7 @@ Use Node.js 24 LTS and npm. This project currently targets Expo SDK 57; use a co
 git clone https://github.com/nerdicom/rumorly.git
 cd rumorly
 npm ci
+cp .env.example .env
 npm start
 ```
 
@@ -45,7 +48,7 @@ npm test
 npm run export
 ```
 
-`export` compiles JavaScript/assets for Android, iOS, and web. It does not produce signed App Store or Play Store binaries. Unit tests cover voting integrity, visibility controls, submission status, persistence decoding, and input validation. GitHub Actions repeats these checks.
+`export` compiles JavaScript/assets for Android, iOS, and web. It does not produce signed App Store or Play Store binaries. Tests cover voting integrity, visibility controls, persistence and input validation, plus actual PostgreSQL grants, row-level security, and moderation permissions using PGlite. GitHub Actions repeats these checks.
 
 See [VALIDATION.md](docs/VALIDATION.md) for the initial validation results and remaining native-device checks.
 
@@ -60,7 +63,9 @@ src/app/          Expo Router screens and navigation
 src/components/   Shared visual components
 src/data/         Clearly fictional preview stories
 src/domain/       Types, vote rules, validation, persistence decoding
-src/store/        Local app state and AsyncStorage
+src/store/        Authentication, account store, and independent local demo
+src/lib/          Supabase client, server data access, error handling
+supabase/         Database migration, review queries, email template
 tests/           Behavioral unit tests
 docs/PRODUCT.md  Durable decisions and monetization hypotheses
 docs/ROADMAP.md  Path from demo to private beta

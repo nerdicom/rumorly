@@ -6,7 +6,7 @@ Interactive mobile UI, fictional data, local persistence, source-link validation
 
 ## Milestone 2 — accounts and backend
 
-Choose a backend (Supabase/Postgres is a candidate, not a configured dependency). Add authenticated adult accounts, pseudonymous public profiles, deletion/export flows, and a privacy policy with real operator contacts.
+Supabase/Postgres has been selected. The repository now includes email-code authentication, public display names, shared participation, database access rules, and an operator review queue. Apply and verify the migration and email templates as recorded in SUPABASE.md. Finish deletion/export flows and a privacy policy with real operator contacts.
 
 Proposed server model:
 

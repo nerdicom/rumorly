@@ -3,10 +3,13 @@ import { Pressable, Text, View } from 'react-native';
 import { useApp } from '../store/AppStore';
 import { c, s, serif } from '../theme';
 import { Brand, Button, Icon, Page } from './ui';
+import { AuthForm } from './AuthForm';
 
 export function Onboarding() {
   const { dispatch } = useApp();
   const [accepted, setAccepted] = useState(false);
+  const [account, setAccount] = useState(false);
+  if (account) return <AuthForm onBack={() => setAccount(false)} />;
   return <Page style={{ justifyContent: 'center', gap: 28 }}>
     <Brand large />
     <View style={{ backgroundColor: c.plum, borderRadius: 30, padding: 30, gap: 20, overflow: 'hidden' }}>
@@ -23,6 +26,7 @@ export function Onboarding() {
       <Icon name={accepted ? 'checkbox' : 'square-outline'} color={c.accent} size={25} /><Text style={[s.small, { flex: 1 }]}>I’m 18 or older and agree to keep it respectful. This is a local preview with fictional stories, not a live community.</Text>
     </Pressable>
     <Button label="Let me in" icon="arrow-forward" disabled={!accepted} onPress={() => dispatch({ type: 'onboard' })} />
+    <Button label="Sign in or create an account" secondary onPress={() => setAccount(true)} />
     <Text style={[s.small, { textAlign: 'center' }]}>No account needed for this preview. Changes stay on this device.</Text>
   </Page>;
 }

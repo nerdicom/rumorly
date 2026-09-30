@@ -3,14 +3,13 @@ import { Text, TextInput, View } from 'react-native';
 import { Empty, Icon, Page } from '../../components/ui';
 import { StoryCard } from '../../components/StoryCard';
 import { TopicChips } from '../../components/TopicChips';
-import { stories } from '../../data/stories';
 import { isVisible } from '../../domain/state';
 import type { Topic } from '../../domain/types';
 import { useApp } from '../../store/AppStore';
 import { c, s } from '../../theme';
 
 export default function Discover() {
-  const { state } = useApp();
+  const { state, stories, mode } = useApp();
   const [query, setQuery] = useState('');
   const [topic, setTopic] = useState<Topic>('All');
   const results = stories.filter(story => isVisible(story, state) && (topic === 'All' || story.topic === topic) && `${story.title} ${story.summary} ${story.author}`.toLowerCase().includes(query.trim().toLowerCase()));
@@ -20,6 +19,6 @@ export default function Discover() {
     <TopicChips selected={topic} onSelect={setTopic} />
     <Text style={s.h3}>{query ? 'Here’s what we found' : 'Worth a closer look'}</Text>
     {results.map(story => <StoryCard key={story.id} story={story} />)}
-    {!results.length && <Empty title="No whispers here" body="Try a different word or topic. This preview contains four fictional stories." icon="search-outline" />}
+    {!results.length && <Empty title="No whispers here" body={mode === 'demo' ? 'Try a different word or topic. This preview contains four fictional stories.' : 'Try another word or topic. Only reviewed stories appear here.'} icon="search-outline" />}
   </Page>;
 }

@@ -42,4 +42,4 @@ Docs: https://docs.expo.dev/eas/index.md
 
 ## Rumorly product constraints
 
-Read `docs/PRODUCT.md` before product changes. This is a local demo with fictional seed content. Keep reports/submissions explicitly local until a real backend is connected. Paid status must not change voting power or establish credibility. Run `npm test` as well as lint/typecheck for changes to state or input validation.
+Read `docs/PRODUCT.md` before product changes. The app has an independent fictional local demo and a Supabase account mode. Read docs/SUPABASE.md for deployment status. Keep demo activity local; account actions require confirmed database saves. Never describe a prepared migration as applied. Paid status must not change voting power or establish credibility. Run `npm test` as well as lint/typecheck for changes to state or input validation.

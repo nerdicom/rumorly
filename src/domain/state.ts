@@ -38,7 +38,7 @@ export function reducer(state: DemoState, action: Action): DemoState {
   }
 }
 export function isVisible(story: Story, state: DemoState): boolean {
-  return !state.blocked.includes(story.author) && !state.reports.some(report => report.storyId === story.id);
+  return !state.blocked.includes(story.authorId ?? story.author) && !state.reports.some(report => report.storyId === story.id);
 }
 export function heat(story: Story, state: DemoState): number { return story.heat + (state.votes[story.id] ?? 0); }
 export function publicSourceError(value: string): string | null {

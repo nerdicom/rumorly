@@ -34,7 +34,7 @@ Screens: feed, discover/search, submit a story, following, profile, story timeli
 
 ## Open decisions
 
-Initial entertainment community; final visual identity; authentication provider; backend hosting; moderator staffing and response targets; legal/support contacts; subscription value validation; store accounts and launch geography.
+Initial entertainment community; final visual identity; moderator dashboard and auth email delivery; moderator staffing and response targets; legal/support contacts; subscription value validation; store accounts and launch geography.
 
 ## Source policies checked at project inception
 
@@ -43,3 +43,7 @@ Initial entertainment community; final visual identity; authentication provider;
 - Reddit Premium feature reference: https://support.reddithelp.com/hc/en-us/articles/360043034412-What-is-a-Reddit-Premium-subscription
 
 Recheck policies before store submission. A local prototype does not demonstrate production moderation or app-store approval.
+
+## Account integration — September 29, 2026 (Denver)
+
+Selected Supabase for authentication and Postgres, project `qkdznbbecplknjopgpax`. The Expo app uses passwordless email codes and `EXPO_PUBLIC_` configuration. The migration enforces equal votes and keeps posts/context pending until an operator review. Guest/demo data stays separate from signed-in accounts. No paid influence, payments, or automatic publication were added. See `SUPABASE.md` for deployment status; preparation is not evidence that the hosted database has been migrated.

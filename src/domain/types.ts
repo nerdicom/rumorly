@@ -9,12 +9,15 @@ export interface Story {
   topic: Exclude<Topic, 'All'>;
   status: StoryStatus;
   author: string;
+  authorId?: string;
+  source?: string;
   initials: string;
   color: string;
   age: string;
   heat: number;
-  timeline: { title: string; body: string; time: string; kind: 'post' | 'context' | 'update' }[];
+  timeline: { title: string; body: string; time: string; source?: string; kind: 'post' | 'context' | 'update' }[];
 }
+export type ModerationStatus = 'pending' | 'published' | 'rejected' | 'removed';
 export interface Submission {
   id: string;
   title: string;
@@ -22,7 +25,7 @@ export interface Submission {
   source: string;
   topic: Exclude<Topic, 'All'>;
   createdAt: string;
-  status: 'pending';
+  status: ModerationStatus;
 }
 export interface ContextSubmission {
   id: string;
@@ -30,7 +33,7 @@ export interface ContextSubmission {
   body: string;
   source: string;
   createdAt: string;
-  status: 'pending';
+  status: ModerationStatus;
 }
 export const reportReasons = ['Harassment or bullying', 'Private information', 'Involves a minor', 'Misleading or missing context', 'Other'] as const;
 export interface Report {
