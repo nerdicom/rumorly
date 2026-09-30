@@ -19,7 +19,7 @@ export default function Feed() {
   return <Page>
     <View style={s.between}><Brand /><IconButton icon="search-outline" label="Search stories" onPress={() => router.push('/discover')} /></View>
     <View style={{ backgroundColor: c.plum, padding: 24, borderRadius: 25, gap: 12 }}>
-      <View style={s.between}><Text style={[s.label, { color: c.lime }]}>THE CONVERSATION STARTS HERE</Text><Icon name="sparkles-outline" color={c.lime} size={21} /></View>
+      <View style={s.between}><Text style={[s.label, { color: c.lime, flex: 1, lineHeight: 16 }]}>THE CONVERSATION STARTS HERE</Text><Icon name="sparkles-outline" color={c.lime} size={21} /></View>
       <Text style={{ fontFamily: serif, fontSize: 34, lineHeight: 39, color: c.paper, letterSpacing: -0.8 }}>Heard something?{ '\n' }Pull up a seat.</Text>
       <Text style={{ color: '#DACBD6', fontSize: 13, lineHeight: 20 }}>A little buzz. A little context. The whole story.</Text>
       <Pressable accessibilityRole="button" onPress={() => router.push('/post')} style={[s.row, { alignSelf: 'flex-start', backgroundColor: c.lime, borderRadius: 20, paddingHorizontal: 16, minHeight: 44, marginTop: 3 }]}><Text style={{ fontSize: 12, fontWeight: '800', color: c.ink }}>Start a conversation</Text><Icon name="arrow-forward" size={16} /></Pressable>

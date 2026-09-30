@@ -4,6 +4,8 @@
 
 An Expo + React Native mobile app for following the conversation and the context behind it. This repository contains the first interactive **local demo**, not a live public rumor service.
 
+<img src="docs/previews/feed.png" alt="Rumorly mobile feed preview" width="390" />
+
 ## What works
 
 - Adult-preview acknowledgment and community guidelines.
@@ -44,6 +46,8 @@ npm run export
 ```
 
 `export` compiles JavaScript/assets for Android, iOS, and web. It does not produce signed App Store or Play Store binaries. Unit tests cover voting integrity, visibility controls, submission status, persistence decoding, and input validation. GitHub Actions repeats these checks.
+
+See [VALIDATION.md](docs/VALIDATION.md) for the initial validation results and remaining native-device checks.
 
 ## Build a preview binary later
 

@@ -11,7 +11,7 @@ export function Icon({ name, size = 20, color = c.ink }: { name: IconName; size?
   return <Ionicons name={name} size={size} color={color} />;
 }
 export function Button({ label, onPress, icon, secondary, disabled, small, testID }: { label: string; onPress: () => void; icon?: IconName; secondary?: boolean; disabled?: boolean; small?: boolean; testID?: string }) {
-  return <Pressable testID={testID} accessibilityRole="button" accessibilityState={{ disabled: !!disabled }} disabled={disabled} onPress={onPress}
+  return <Pressable testID={testID} accessibilityRole="button" accessibilityLabel={label} accessibilityState={{ disabled: !!disabled }} disabled={disabled} onPress={onPress}
     style={({ pressed }) => [styles.button, secondary && styles.secondary, small && { minHeight: 44, paddingHorizontal: 15 }, { opacity: disabled ? 0.45 : pressed ? 0.7 : 1 }]}>
     {icon && <Icon name={icon} color={secondary ? c.ink : c.paper} size={18} />}
     <Text style={{ color: secondary ? c.ink : c.paper, fontWeight: '700', fontSize: small ? 13 : 15 }}>{label}</Text>

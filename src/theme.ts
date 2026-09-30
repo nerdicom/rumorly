@@ -5,7 +5,7 @@ export const c = {
   line: '#E9E1DF', accent: '#AC3154', rose: '#F8E5EB', lime: '#E2F7A2',
   plum: '#35202F', green: '#365A42', softGreen: '#E9F0E7', blue: '#325B79',
 };
-export const serif = Platform.select({ ios: 'Georgia', android: 'serif', default: 'Georgia' });
+export const serif = Platform.select({ ios: 'Georgia', android: 'serif', web: 'Georgia, "Times New Roman", serif', default: 'serif' });
 export const s = StyleSheet.create({
   row: { flexDirection: 'row', alignItems: 'center', gap: 10 },
   between: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 12 },
