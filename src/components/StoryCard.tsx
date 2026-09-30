@@ -6,6 +6,7 @@ import { heat } from '../domain/state';
 import { useApp } from '../store/AppStore';
 import { c, s } from '../theme';
 import { Badge, Icon, IconButton } from './ui';
+import { TieDyeBackdrop } from './TieDye';
 
 export function Voting({ story }: { story: Story }) {
   const { state, dispatch, busy } = useApp();
@@ -19,6 +20,7 @@ export function StoryCard({ story }: { story: Story }) {
   const { state, dispatch, busy } = useApp();
   const following = state.follows.includes(story.id);
   return <View style={s.card}>
+    <View style={{ height: 5, borderRadius: 3, overflow: 'hidden', marginTop: -6 }}><TieDyeBackdrop /></View>
     <View style={s.between}><View style={s.row}><View style={[styles.avatar, { backgroundColor: story.color }]}><Text style={{ fontWeight: '800', fontSize: 11, color: c.ink }}>{story.initials}</Text></View><View><Text style={{ fontWeight: '600', fontSize: 12, color: c.ink }}>@{story.author}</Text><Text style={s.small}>{story.topic} · {story.age}</Text></View></View><IconButton icon="ellipsis-horizontal" label={`Story options: ${story.title}`} onPress={() => router.push({ pathname: '/report/[id]', params: { id: story.id } })} /></View>
     <Pressable accessibilityRole="button" accessibilityLabel={`Open story: ${story.title}`} onPress={() => router.push({ pathname: '/story/[id]', params: { id: story.id } })} style={{ gap: 10 }}>
       <Badge status={story.status} /><Text style={s.h2}>{story.title}</Text><Text style={s.body}>{story.summary}</Text>

@@ -4,7 +4,9 @@
 
 An Expo + React Native mobile app for following the conversation and the context behind it. This repository contains an interactive fictional demo and a Supabase account/community integration for early testing. It is not a launched public service.
 
-<img src="docs/previews/feed.png" alt="Rumorly mobile feed preview" width="390" />
+<img src="docs/previews/feed-tie-dye.png" alt="Rumorly mobile feed with its rainbow tie-dye theme" width="390" />
+
+The default visual identity is full-spectrum rainbow tie-dye, with light reading surfaces and deep violet controls. See [design notes](docs/DESIGN.md).
 
 ## What works
 
@@ -32,10 +34,13 @@ git clone https://github.com/nerdicom/rumorly.git
 cd rumorly
 npm ci
 cp .env.example .env
+npx expo login --browser
 npm start
 ```
 
 Open Expo Go and scan the terminal QR code. Keep your phone and computer on the same network. On iPhone, scan with the Camera app. Press `w` for the web preview, or run `npm run web` separately. The Expo documentation explains device setup: https://docs.expo.dev/get-started/set-up-your-environment/
+
+Use the same Expo account in the browser/CLI and Expo Go on a physical iPhone. If LAN requests time out, install the tunnel helper locally with `npx expo install --dev @expo/ngrok@^4.1.0`, then run `npm start -- --go --tunnel`. On Windows PowerShell, use `npx.cmd` and `npm.cmd` if script execution is restricted. Scan the new terminal QR after switching connection types. Browser login reuses your Expo website session when available.
 
 For an Android emulator, use `npm run android`. For a locally installed iOS simulator on macOS, use `npm run ios`. A native simulator or physical device still needs to be tested before distribution.
 

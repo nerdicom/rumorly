@@ -1,9 +1,10 @@
 import { Platform, StyleSheet } from 'react-native';
 
 export const c = {
-  bg: '#FAF7F2', paper: '#FFFFFF', ink: '#2B1824', muted: '#746A70',
-  line: '#E9E1DF', accent: '#AC3154', rose: '#F8E5EB', lime: '#E2F7A2',
-  plum: '#35202F', green: '#365A42', softGreen: '#E9F0E7', blue: '#325B79',
+  bg: '#F7EFFF', paper: '#FFFFFF', ink: '#28113E', muted: '#594765',
+  line: '#E5D7EE', accent: '#7126A5', rose: '#F9E0F5', lime: '#EAFF92',
+  plum: '#381454', green: '#24583D', softGreen: '#DFF8E9', blue: '#2455A4',
+  pink: '#B71971',
 };
 export const serif = Platform.select({ ios: 'Georgia', android: 'serif', web: 'Georgia, "Times New Roman", serif', default: 'serif' });
 export const s = StyleSheet.create({
@@ -15,6 +16,6 @@ export const s = StyleSheet.create({
   body: { fontSize: 15, lineHeight: 23, color: c.muted },
   small: { fontSize: 12, lineHeight: 18, color: c.muted },
   label: { fontSize: 10, fontWeight: '800', letterSpacing: 1.8, color: c.accent },
-  card: { backgroundColor: c.paper, borderWidth: 1, borderColor: c.line, borderRadius: 22, padding: 20, gap: 14 },
+  card: { backgroundColor: c.paper, borderWidth: 1, borderColor: c.line, borderRadius: 22, padding: 20, gap: 14, boxShadow: '0 5px 18px rgba(56, 20, 84, 0.06)' },
   input: { backgroundColor: c.paper, borderColor: c.line, borderWidth: 1, borderRadius: 14, paddingHorizontal: 16, paddingVertical: 14, fontSize: 16, color: c.ink, minHeight: 52 },
 });

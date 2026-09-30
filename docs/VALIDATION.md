@@ -55,3 +55,11 @@ The email template step is blocked by the project's default SMTP/free-tier restr
 Copied the project ID `ac6cf278-9e81-448b-987a-b4bf117d6dea`, owner `nerdicom`, and slug `rumorly` from the user's Expo project-details screenshot into `app.json`. The user's dashboard screenshot also shows `nerdicom/rumorly` linked on GitHub. Added explicit Android/iOS build images to the existing EAS profiles as required by Expo's GitHub build guide.
 
 The resolved public Expo configuration reports the expected owner, slug, project ID, and SDK 57. Typecheck and lint passed again. This verifies configuration only: no EAS account authentication, signing credentials, native cloud build, or store submission was performed by these checks.
+
+## Rainbow tie-dye identity — September 30, 2026 (Denver)
+
+- Applied the requested all-color tie-dye texture to shared page backgrounds, feature panels, story accents, and tab navigation. The texture is bundled locally as a 359 KB JPEG; no new runtime dependencies are needed.
+- Typecheck and Expo lint passed. Final iOS, Android, and web production JavaScript/asset exports passed.
+- Chromium rendered onboarding, feed, and discover at 390 x 844. The texture loaded in every image instance, onboarding and search navigation remained usable, and no browser runtime errors occurred. Discover had no horizontal overflow at 320px. Reviewed all three screenshots visually.
+- `previews/feed-tie-dye.png` is the actual exported app rendering. The updated theme has not yet been verified on the user's iPhone; their downloaded preview needs the new source/assets first.
+- The user reported that Expo browser login worked after Windows global tunnel-module resolution and a waiting terminal login prompt were resolved. Documented the browser-login and local tunnel-helper steps in README.

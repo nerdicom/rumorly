@@ -34,7 +34,11 @@ Screens: feed, discover/search, submit a story, following, profile, story timeli
 
 ## Open decisions
 
-Initial entertainment community; final visual identity; moderator dashboard and auth email delivery; moderator staffing and response targets; legal/support contacts; subscription value validation; store accounts and launch geography.
+Initial entertainment community; moderator dashboard and auth email delivery; moderator staffing and response targets; legal/support contacts; subscription value validation; store accounts and launch geography.
+
+## Visual identity — September 30, 2026 (Denver)
+
+The user selected full-spectrum rainbow tie-dye as the dominant app color scheme. Use the bundled multicolor textile texture across screen backgrounds, feature panels, story-card accents, and navigation. Keep story/form surfaces light with dark plum text and deep violet controls so color never interferes with reading or status labels. This is the default identity, not a paid profile theme.
 
 ## Source policies checked at project inception
 

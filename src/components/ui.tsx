@@ -5,6 +5,7 @@ import { KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text
 import { SafeAreaView } from 'react-native-safe-area-context';
 import type { ModerationStatus, StoryStatus } from '../domain/types';
 import { c, s } from '../theme';
+import { TieDyeBackdrop } from './TieDye';
 
 export type IconName = React.ComponentProps<typeof Ionicons>['name'];
 export function Icon({ name, size = 20, color = c.ink }: { name: IconName; size?: number; color?: ColorValue }) {
@@ -23,17 +24,20 @@ export function IconButton({ icon, label, onPress, active = false, disabled = fa
   </Pressable>;
 }
 export function Page({ children, back, title, style }: { children: React.ReactNode; back?: boolean; title?: string; style?: StyleProp<ViewStyle> }) {
-  return <SafeAreaView style={{ flex: 1, backgroundColor: c.bg }} edges={['top', 'left', 'right']}>
+  return <View style={{ flex: 1, backgroundColor: c.bg }}>
+    <TieDyeBackdrop wash={0.76} />
+    <SafeAreaView style={{ flex: 1 }} edges={['top', 'left', 'right']}>
     <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
       <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={[styles.page, style]}>
         {back && <View style={s.between}><IconButton icon="arrow-back" label="Go back" onPress={() => router.canGoBack() ? router.back() : router.replace('/')} /><Text style={s.h3}>{title}</Text><View style={{ width: 44 }} /></View>}
         {children}
       </ScrollView>
     </KeyboardAvoidingView>
-  </SafeAreaView>;
+    </SafeAreaView>
+  </View>;
 }
 export function Brand({ large = false }: { large?: boolean }) {
-  return <View style={[s.row, { gap: 2 }]}><Text style={{ fontSize: large ? 56 : 31, fontWeight: '900', letterSpacing: -1.8, color: c.ink }}>rumorly</Text><Text style={{ fontSize: large ? 60 : 34, fontWeight: '900', color: c.accent }}>.</Text></View>;
+  return <View style={[s.row, { gap: 2 }]}><Text style={{ fontSize: large ? 56 : 31, fontWeight: '900', letterSpacing: -1.8, color: c.ink }}>rumorly</Text><Text style={{ fontSize: large ? 60 : 34, fontWeight: '900', color: c.pink }}>.</Text></View>;
 }
 export function Badge({ status }: { status: StoryStatus | ModerationStatus | 'Pending' }) {
   const updated = status === 'Updated';
