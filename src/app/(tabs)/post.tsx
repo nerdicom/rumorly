@@ -6,9 +6,10 @@ import { TopicChips } from '../../components/TopicChips';
 import { submissionError } from '../../domain/state';
 import type { Topic } from '../../domain/types';
 import { useApp } from '../../store/AppStore';
-import { c, s } from '../../theme';
+import { useTheme } from '../../theme';
 
 export default function Post() {
+  const { c, s } = useTheme();
   const { dispatch, mode, busy } = useApp();
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');

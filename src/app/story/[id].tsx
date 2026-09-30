@@ -5,9 +5,10 @@ import { Badge, Button, Empty, Icon, IconButton, Notice, Page } from '../../comp
 import { Voting } from '../../components/StoryCard';
 import { isVisible, publicSourceError } from '../../domain/state';
 import { useApp } from '../../store/AppStore';
-import { c, s } from '../../theme';
+import { useTheme } from '../../theme';
 
 export default function StoryDetail() {
+  const { c, s } = useTheme();
   const { id } = useLocalSearchParams<{ id: string }>();
   const { state, dispatch, stories, mode, busy } = useApp();
   const story = stories.find(item => item.id === id);
@@ -32,7 +33,7 @@ export default function StoryDetail() {
     <Text style={s.small}>Heat measures attention, not accuracy. “Updated” means new context was added; it does not verify every claim.</Text>
     <View style={[s.between, { marginTop: 8 }]}><Text style={s.h2}>How it unfolded</Text><Text style={s.small}>{story.timeline.length} chapters</Text></View>
     <View style={{ gap: 0 }}>{story.timeline.map((item, i) => <View key={item.title} style={{ flexDirection: 'row', gap: 15 }}>
-      <View style={{ alignItems: 'center', width: 32 }}><View style={{ width: 32, height: 32, borderRadius: 16, backgroundColor: i === story.timeline.length - 1 ? c.lime : c.rose, justifyContent: 'center', alignItems: 'center' }}><Icon name={item.kind === 'update' ? 'sparkles-outline' : item.kind === 'context' ? 'documents-outline' : 'chatbubble-outline'} size={16} /></View>{i < story.timeline.length - 1 && <View style={{ width: 1, flex: 1, backgroundColor: c.line }} />}</View>
+      <View style={{ alignItems: 'center', width: 32 }}><View style={{ width: 32, height: 32, borderRadius: 16, backgroundColor: i === story.timeline.length - 1 ? c.highlight : c.accentSoft, justifyContent: 'center', alignItems: 'center' }}><Icon name={item.kind === 'update' ? 'sparkles-outline' : item.kind === 'context' ? 'documents-outline' : 'chatbubble-outline'} size={16} /></View>{i < story.timeline.length - 1 && <View style={{ width: 1, flex: 1, backgroundColor: c.line }} />}</View>
       <View style={{ flex: 1, paddingBottom: 30, gap: 7 }}><Text style={s.small}>{item.time}</Text><Text style={s.h3}>{item.title}</Text><Text style={s.body}>{item.body}</Text>{!!item.source && <Text selectable style={s.small}>Source: {item.source}</Text>}</View>
     </View>)}</View>
     <View style={s.card}><Text style={s.h2}>There’s more to it?</Text><Text style={s.body}>Add a correction, public source, or missing context. It stays pending until reviewed.</Text><TextInput accessibilityLabel="Add story context" placeholder="Here’s a little more context…" placeholderTextColor={c.muted} value={body} onChangeText={setBody} maxLength={1000} multiline style={[s.input, { minHeight: 110, textAlignVertical: 'top' }]} /><TextInput accessibilityLabel="Context source link" placeholder="Public https:// source (optional)" placeholderTextColor={c.muted} value={source} onChangeText={setSource} maxLength={2000} autoCapitalize="none" autoCorrect={false} keyboardType="url" style={s.input} /><Button label={mode === 'live' ? 'Submit context for review' : 'Save demo context'} disabled={busy} secondary onPress={addContext} />{!!message && <Notice>{message}</Notice>}</View>

@@ -4,9 +4,16 @@ Project: `qkdznbbecplknjopgpax` at https://qkdznbbecplknjopgpax.supabase.co.
 
 ## Deployment status
 
-The project and publishable key were verified using read-only requests on September 30, 2026 UTC. Email authentication and signup are enabled; email confirmation is required. At that check, the `public.stories` table did not exist. The Supabase plugin installation was confirmed, but this running assistant session did not expose its database tools. **The migration and email template have not been applied to the hosted project.** Do not mark them deployed without checking the actual project.
+The migration was applied successfully through the Supabase SQL editor on September 29, 2026 (America/Denver). The hosted database now has all eight application tables with RLS enabled; anonymous SELECT is denied on every table. Live REST requests to stories and reports returned the expected permission denial. Supabase Security Advisor was rerun: **zero errors, zero warnings**, and one informational note for the intentionally operator-only `moderation_actions` table (RLS enabled with no client policy).
 
-The repository contains the mobile integration and a tested migration. The Next.js `@supabase/ssr`, cookie middleware, and `NEXT_PUBLIC_` variables do not apply to this Expo app.
+**Resend SMTP and both email-code templates are configured as of September 30, 2026 (America/Denver).** `rumorly.app` is verified for sending. Supabase uses `Rumorly <no-reply@rumorly.app>`, `smtp.resend.com:465`, username `resend`, and a sending-only key restricted to `rumorly.app`. The key is stored only in Supabase's encrypted SMTP configuration, never in this repository or the mobile app. The saved settings were checked after reloading the dashboard.
+
+Both **Magic link or OTP** and **Confirm sign up** now use subject `Your Rumorly sign-in code` and the exact body in `supabase/templates-email-code.html`, including `{{ .Token }}`. Supabase confirmed both template saves. The per-user send interval is 60 seconds; enabling custom SMTP sets the initial hourly email limit to 30.
+
+**Test email delivery is verified.** On September 30, 2026, Supabase accepted two explicitly authorized sign-in-code requests, and Resend marked both Delivered, including the user's subsequently selected Gmail address. Recipient addresses and codes are not recorded in this public repository. This verifies delivery to the receiving mail servers; inbox placement and entering a valid code in the app remain to be checked by the recipient. `.env.example` now enables `EXPO_PUBLIC_AUTH_EMAIL_CODES_READY=true`; existing installations must update their own `.env` and restart Expo. Guest/demo mode remains usable. Configuration and template evidence are in `docs/previews/resend-smtp.jpg` and `docs/previews/email-code-template.jpg`.
+
+The Supabase plugin is installed but its SQL actions were not exposed to the assistant; the authorized browser fallback was used for configuration. The delivery test requested account creation for the two authorized email addresses; no code was read or redeemed by the assistant. No seed content, billing, or paid service subscription was created.
+The repository contains the mobile integration and the exact tested, applied migration. The Next.js `@supabase/ssr`, cookie middleware, and `NEXT_PUBLIC_` variables do not apply to this Expo app.
 
 ## Configure the app
 
@@ -16,13 +23,13 @@ npm ci
 npm start
 ```
 
-The project URL and publishable key in `.env.example` are public client configuration. `.env` is ignored by Git. Never add a service-role key, secret key, database password, or management token to an `EXPO_PUBLIC_` variable or to this repository. Configure the same two public variables in the intended EAS environment before a cloud build. Restart Expo after changing environment variables.
+The project URL and publishable key in `.env.example` are public client configuration. `.env` is ignored by Git. Never add a service-role key, secret key, database password, or management token to an `EXPO_PUBLIC_` variable or to this repository. Configure the public project variables and readiness flag in the intended EAS environment before a cloud build. Restart Expo after changing environment variables.
 
 Without these variables, the local demo still runs and the account screen explains that accounts are unavailable. Guest/demo activity is not uploaded when signing in. Signed-in account data is held in memory; only the authentication session is persisted. Sign-out/account changes unmount the personal store and leave the independent fictional demo intact.
 
 ## Apply the database migration
 
-Apply `supabase/migrations/202609300001_initial_community.sql` once to this project through the connected Supabase migration tool, CLI, or its SQL editor. The migration is transactional and deliberately fails on conflicting existing table names; inspect existing objects rather than overwriting them. It creates:
+**Already applied to this project; do not run it again.** For a fresh project, apply `supabase/migrations/202609300001_initial_community.sql` once through the connected Supabase migration tool, CLI, or SQL editor. This deployment used the SQL editor, so it did not create a Supabase CLI migration-history entry; reconcile migration history before using CLI migration deployment against this existing project. The migration is transactional and deliberately fails on conflicting existing table names; inspect existing objects rather than overwriting them. It creates:
 
 - Auth-owned public display names, without email addresses or client-controlled roles.
 - Stories and context that default to pending review.
@@ -32,17 +39,19 @@ Apply `supabase/migrations/202609300001_initial_community.sql` once to this proj
 
 Every table has row-level security enabled. Explicit column grants prevent changing moderation status, editorial status, ownership, review timestamps, or vote weight. Anonymous clients have no table access. Only approved content appears in the community feed; authors can inspect their own pending/rejected content in their profile.
 
-The `story_scores` function exposes aggregate attention scores without revealing voting histories. `can_report_story` avoids a recursive policy dependency. Both functions pin `search_path` and validate the authenticated caller; the operator review function is unavailable to mobile users.
+The public `story_scores` RPC is an invoker wrapper over a narrowly scoped private aggregate. Privileged helpers and the profile-creation trigger live in the unexposed `rumorly_private` schema with pinned search paths and restricted execution. The aggregate and report lookup validate the authenticated caller. The public operator review function uses invoker permissions and is unavailable to mobile users.
 
-No seed stories or test accounts are created in the hosted project. The fictional demo remains separate.
+The migration creates no seed stories or test accounts. The later email-delivery test requested two unconfirmed accounts, without asserting adult acknowledgment or accepting community terms on anyone's behalf. The fictional demo remains separate.
 
 ## Configure email codes
 
 The app uses passwordless email codes for account creation and sign-in. No redirect/deep-link setup or password-reset flow is needed for this auth method.
 
-In Supabase **Authentication → Email Templates**, use `supabase/templates-email-code.html` for **Magic Link** and **Confirm signup**. The essential variable is `{{ .Token }}`. The app accepts 6–8 digits, handles expired/invalid codes, and enforces a local 60-second resend wait in addition to Supabase's server limits. Keep email confirmation enabled.
+First configure a transactional email provider in **Authentication → Emails → SMTP Settings**. New free projects cannot customize the default-provider templates. Then in **Authentication → Emails → Templates**, use `supabase/templates-email-code.html` for **Magic Link** and **Confirm signup**. The essential variable is `{{ .Token }}`. The app accepts 6–8 digits, handles expired/invalid codes, and enforces a local 60-second resend wait in addition to Supabase's server limits. Keep email confirmation enabled. After saving both templates and confirming delivery, set `EXPO_PUBLIC_AUTH_EMAIL_CODES_READY=true` in the app environment and rebuild/restart Expo.
 
-Supabase's default mail service restricts delivery to authorized team addresses and has low rate limits. Use a project-team email for initial testing or configure a production SMTP provider before inviting other testers. No real sign-in emails were sent by the automated tests.
+This project's custom Resend SMTP is configured and delivery to authorized test addresses is verified. The default mail service's project-team-only recipient restriction no longer applies. Automated unit/browser tests send no real emails; the separate user-authorized delivery check did.
+
+Free-tier template restriction: https://supabase.com/changelog/46599-changes-to-email-template-customisation-on-free-tier
 
 Official references: https://supabase.com/docs/guides/auth/auth-email-passwordless and https://supabase.com/docs/guides/auth/auth-smtp
 
@@ -58,7 +67,7 @@ The review queue is stored in the database; an operator uses the SQL editor init
 
 ## Validation and remaining work
 
-`npm test` runs actual PostgreSQL behavior in PGlite, including grants, RLS, private data boundaries, duplicate/weighted votes, moderator-only publication, and blocked/reported/removed content. This tests the migration locally, not the hosted Supabase configuration.
+`npm test` runs actual PostgreSQL behavior in PGlite, including grants, RLS, private data boundaries, duplicate/weighted votes, moderator-only publication, and blocked/reported/removed content. This tests database behavior locally. Hosted table security, anonymous-access denial, and the security advisor were also checked after deployment. Email delivery is now verified; real code verification and two-account behavior testing remain outstanding.
 
 Browser tests with mocked Supabase responses cover signup acknowledgment, code errors/resend limits, session restoration, shared mutations, failed-save input retention, and sign-out isolation. Typecheck, lint, and all-platform JavaScript exports are also required.
 

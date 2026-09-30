@@ -4,10 +4,13 @@
 
 An Expo + React Native mobile app for following the conversation and the context behind it. This repository contains an interactive fictional demo and a Supabase account/community integration for early testing. It is not a launched public service.
 
-<img src="docs/previews/feed.png" alt="Rumorly mobile feed preview" width="390" />
+<img src="docs/previews/feed-light.png" alt="Rumorly feed in light mode" width="320" /> <img src="docs/previews/feed-dark.png" alt="Rumorly feed in dark mode" width="320" />
+
+The app uses a clean violet palette with light and dark modes. Use the header switch or **You → Appearance**; your choice stays saved on this device. The tie-dye design has been completely replaced. See [design notes](docs/DESIGN.md).
 
 ## What works
 
+- Persistent light/dark appearance, including forms, navigation, and native status-bar colors.
 - Adult-preview acknowledgment and community guidelines.
 - Feed with topic filters and hot/latest sorting; text search.
 - Heat up / cool down: one changeable vote, never a truth score.
@@ -21,7 +24,7 @@ An Expo + React Native mobile app for following the conversation and the context
 - Rumorly Plus concept screen; no purchases or billing.
 - Shared iOS, Android, and web components, plus CI checks.
 
-All demo stories, programs, and accounts are fictional. Guest actions stay on the device. Signed-in actions use Supabase; stories/context stay pending until approved, and reports enter a private database queue. The database migration and email templates must be applied before account testing; see [SUPABASE.md](docs/SUPABASE.md) for the verified setup status and exact steps. No billing or push service is active.
+All demo stories, programs, and accounts are fictional. Guest actions stay on the device. Signed-in actions use Supabase; stories/context stay pending until approved, and reports enter a private database queue. The database migration and email-code templates are deployed, and Resend confirmed test delivery. Account sign-in is enabled in the example environment; existing installations must update their readiness flag and restart Expo. See [SUPABASE.md](docs/SUPABASE.md) for the verified setup status and remaining account tests. No billing or push service is active.
 
 ## Run on your phone
 
@@ -32,10 +35,13 @@ git clone https://github.com/nerdicom/rumorly.git
 cd rumorly
 npm ci
 cp .env.example .env
+npx expo login --browser
 npm start
 ```
 
 Open Expo Go and scan the terminal QR code. Keep your phone and computer on the same network. On iPhone, scan with the Camera app. Press `w` for the web preview, or run `npm run web` separately. The Expo documentation explains device setup: https://docs.expo.dev/get-started/set-up-your-environment/
+
+Use the same Expo account in the browser/CLI and Expo Go on a physical iPhone. If LAN requests time out, install the tunnel helper locally with `npx expo install --dev @expo/ngrok@^4.1.0`, then run `npm start -- --go --tunnel`. On Windows PowerShell, use `npx.cmd` and `npm.cmd` if script execution is restricted. Scan the new terminal QR after switching connection types. Browser login reuses your Expo website session when available.
 
 For an Android emulator, use `npm run android`. For a locally installed iOS simulator on macOS, use `npm run ios`. A native simulator or physical device still needs to be tested before distribution.
 
@@ -54,7 +60,9 @@ See [VALIDATION.md](docs/VALIDATION.md) for the initial validation results and r
 
 ## Build a preview binary later
 
-An `eas.json` with internal-preview and production profiles is included. After choosing an Expo account, verify the provisional app identifiers in `app.json`, run `npx eas-cli@latest login`, then `npx eas-cli@latest build:configure`. The Expo project ID and signing credentials must be established before builds. Do not submit this demo to app stores as a finished service.
+`app.json` points to the existing Expo project `@nerdicom/rumorly`, ID `ac6cf278-9e81-448b-987a-b4bf117d6dea`, copied from the owner's Expo project details. The dashboard shows the GitHub repository linked. `eas.json` includes internal-preview and production profiles with explicit platform build images for GitHub builds.
+
+No signed native build has run yet. Verify the provisional app identifiers in `app.json`, sign in with `npx eas-cli@latest login`, and configure signing credentials for the intended platform. Expo's [GitHub build guide](https://docs.expo.dev/build/building-from-github/) requires a successful CLI build for each platform before subsequent GitHub builds. For example, `npx eas-cli@latest build --platform android --profile preview` creates an installable Android preview after signing setup. Configure the public Supabase variables in EAS before account testing; set EXPO_PUBLIC_AUTH_EMAIL_CODES_READY=true for this verified project; a different project must verify its own SMTP/templates and delivery first. Do not submit this demo to app stores as a finished service.
 
 ## Project map
 

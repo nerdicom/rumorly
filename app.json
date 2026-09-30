@@ -2,10 +2,16 @@
   "expo": {
     "name": "Rumorly",
     "slug": "rumorly",
+    "owner": "nerdicom",
+    "extra": {
+      "eas": {
+        "projectId": "ac6cf278-9e81-448b-987a-b4bf117d6dea"
+      }
+    },
     "version": "0.1.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "automatic",
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "app.rumorly.mobile"
@@ -13,7 +19,7 @@
     "android": {
       "package": "app.rumorly.mobile",
       "adaptiveIcon": {
-        "backgroundColor": "#35202F",
+        "backgroundColor": "#252135",
         "foregroundImage": "./assets/adaptive-icon.png"
       },
       "predictiveBackGestureEnabled": true
@@ -30,12 +36,17 @@
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#FAF7F2",
+          "backgroundColor": "#F6F5FA",
           "image": "./assets/icon.png",
-          "imageWidth": 110
+          "imageWidth": 110,
+          "dark": {
+            "backgroundColor": "#111118"
+          }
         }
-      ]
+      ],
+      "expo-system-ui"
     ],
-    "scheme": "rumorly"
+    "scheme": "rumorly",
+    "backgroundColor": "#F6F5FA"
   }
 }

@@ -7,7 +7,7 @@ import type { DemoState, Story } from '../domain/types';
 import { loadCommunity, saveAction, type CommunitySnapshot } from '../lib/community';
 import { friendlyError } from '../lib/errors';
 import { requireSupabase } from '../lib/supabase';
-import { c } from '../theme';
+import { useTheme } from '../theme';
 import { useAuth } from './AuthStore';
 
 const KEY = 'rumorly:demo:v1';
@@ -18,6 +18,7 @@ interface StoreValue {
 }
 const Store = createContext<StoreValue | null>(null);
 export function AppStore({ children }: { children: React.ReactNode }) {
+  const { c } = useTheme();
   const { user, ready } = useAuth();
   if (!ready) return <View style={{ flex: 1, justifyContent: 'center', backgroundColor: c.bg }}><ActivityIndicator accessibilityLabel="Restoring account" color={c.accent} /></View>;
   // Switching accounts unmounts all personal state and in-flight UI callbacks.

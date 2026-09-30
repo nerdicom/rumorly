@@ -5,8 +5,9 @@ import { Button, Empty, Page } from '../../components/ui';
 import { StoryCard } from '../../components/StoryCard';
 import { isVisible } from '../../domain/state';
 import { useApp } from '../../store/AppStore';
-import { s } from '../../theme';
+import { useTheme } from '../../theme';
 export default function Following() {
+  const { s } = useTheme();
   const { state, stories, mode } = useApp();
   const following = stories.filter(story => state.follows.includes(story.id) && isVisible(story, state));
   return <Page><Text style={s.label}>STAY FOR THE PLOT TWIST</Text><Text style={s.h1}>Your front{ '\n' }row seat.</Text><Text style={s.body}>The stories you’re keeping an eye on, all in one place.</Text>

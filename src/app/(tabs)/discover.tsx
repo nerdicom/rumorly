@@ -6,9 +6,10 @@ import { TopicChips } from '../../components/TopicChips';
 import { isVisible } from '../../domain/state';
 import type { Topic } from '../../domain/types';
 import { useApp } from '../../store/AppStore';
-import { c, s } from '../../theme';
+import { useTheme } from '../../theme';
 
 export default function Discover() {
+  const { c, s } = useTheme();
   const { state, stories, mode } = useApp();
   const [query, setQuery] = useState('');
   const [topic, setTopic] = useState<Topic>('All');
