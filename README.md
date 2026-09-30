@@ -21,7 +21,7 @@ An Expo + React Native mobile app for following the conversation and the context
 - Rumorly Plus concept screen; no purchases or billing.
 - Shared iOS, Android, and web components, plus CI checks.
 
-All demo stories, programs, and accounts are fictional. Guest actions stay on the device. Signed-in actions use Supabase; stories/context stay pending until approved, and reports enter a private database queue. The database migration and email templates must be applied before account testing; see [SUPABASE.md](docs/SUPABASE.md) for the verified setup status and exact steps. No billing or push service is active.
+All demo stories, programs, and accounts are fictional. Guest actions stay on the device. Signed-in actions use Supabase; stories/context stay pending until approved, and reports enter a private database queue. The database migration is deployed. Email delivery/templates must be configured before account testing; see [SUPABASE.md](docs/SUPABASE.md) for the verified setup status and exact steps. No billing or push service is active.
 
 ## Run on your phone
 

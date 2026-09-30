@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { Pressable, Text, TextInput, View } from 'react-native';
 import { friendlyError } from '../lib/errors';
-import { requireSupabase, supabase } from '../lib/supabase';
+import { emailCodesReady, requireSupabase, supabase } from '../lib/supabase';
 import { c, s } from '../theme';
 import { Brand, Button, Icon, Notice, Page } from './ui';
 
@@ -47,7 +47,7 @@ export function AuthForm({ onBack }: { onBack: () => void }) {
   return <Page>
     <Brand /><Text style={s.label}>YOUR SEAT AT THE TABLE</Text>
     <Text style={s.h1}>{sentTo ? 'Check your inbox.' : creating ? 'A little curious?' : 'Welcome back.'}</Text>
-    {!supabase ? <Notice>Accounts aren’t configured in this build. You can still explore the fictional demo.</Notice> : <>
+    {!supabase || !emailCodesReady ? <Notice>Account sign-in is being set up. You can still explore the fictional demo.</Notice> : <>
       {sentTo ? <>
         <Text style={s.body}>Enter the code sent to {sentTo}.</Text>
         <TextInput accessibilityLabel="Email verification code" value={token} onChangeText={setToken} keyboardType="number-pad" autoComplete="one-time-code" maxLength={8} placeholder="Your code" placeholderTextColor={c.muted} style={[s.input, { fontSize: 26, letterSpacing: 5 }]} />

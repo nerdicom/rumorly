@@ -47,3 +47,5 @@ Recheck policies before store submission. A local prototype does not demonstrate
 ## Account integration — September 29, 2026 (Denver)
 
 Selected Supabase for authentication and Postgres, project `qkdznbbecplknjopgpax`. The Expo app uses passwordless email codes and `EXPO_PUBLIC_` configuration. The migration enforces equal votes and keeps posts/context pending until an operator review. Guest/demo data stays separate from signed-in accounts. No paid influence, payments, or automatic publication were added. See `SUPABASE.md` for deployment status; preparation is not evidence that the hosted database has been migrated.
+
+The database was deployed and checked on September 29, 2026 (Denver). Supabase requires custom SMTP before code templates can be edited on this new free project. Email sign-in remains gated until a provider and templates are configured; the demo continues to work.

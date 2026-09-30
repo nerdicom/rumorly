@@ -1,5 +1,10 @@
 begin;
 
+-- Internal privileged helpers are outside the Data API's exposed schemas.
+create schema rumorly_private;
+revoke all on schema rumorly_private from public, anon;
+grant usage on schema rumorly_private to authenticated, service_role;
+
 create table public.profiles (
   id uuid primary key references auth.users(id) on delete cascade,
   display_name text not null default 'Curious human' check (char_length(btrim(display_name)) between 1 and 30),
@@ -99,15 +104,15 @@ grant all on public.profiles, public.stories, public.story_updates, public.votes
 
 -- An insert into reports must not recursively expand stories -> reports policies.
 -- This helper only answers whether the current caller can report a published story.
-create function public.can_report_story(target_id uuid) returns boolean
+create function rumorly_private.can_report_story(target_id uuid) returns boolean
 language sql stable security definer set search_path = '' as $$
   select auth.uid() is not null and exists (
     select 1 from public.stories s where s.id = target_id and s.moderation_status = 'published'
     and not exists (select 1 from public.blocks b where b.user_id = auth.uid() and b.blocked_id = s.author_id)
   );
 $$;
-revoke all on function public.can_report_story(uuid) from public, anon;
-grant execute on function public.can_report_story(uuid) to authenticated;
+revoke all on function rumorly_private.can_report_story(uuid) from public, anon;
+grant execute on function rumorly_private.can_report_story(uuid) to authenticated;
 
 create policy profiles_read on public.profiles for select to authenticated using (true);
 create policy profiles_edit on public.profiles for update to authenticated using (id = (select auth.uid())) with check (id = (select auth.uid()));
@@ -145,27 +150,27 @@ create policy follows_insert on public.follows for insert to authenticated with 
 create policy follows_delete on public.follows for delete to authenticated using (user_id = (select auth.uid()));
 create policy reports_read on public.reports for select to authenticated using (user_id = (select auth.uid()));
 create policy reports_insert on public.reports for insert to authenticated with check (
-  user_id = (select auth.uid()) and public.can_report_story(story_id)
+  user_id = (select auth.uid()) and rumorly_private.can_report_story(story_id)
 );
 create policy reports_update on public.reports for update to authenticated using (user_id = (select auth.uid())) with check (user_id = (select auth.uid()));
 create policy blocks_read on public.blocks for select to authenticated using (user_id = (select auth.uid()));
 create policy blocks_insert on public.blocks for insert to authenticated with check (user_id = (select auth.uid()));
 create policy blocks_delete on public.blocks for delete to authenticated using (user_id = (select auth.uid()));
 
-create function public.handle_new_user() returns trigger language plpgsql security definer set search_path = '' as $$
+create function rumorly_private.handle_new_user() returns trigger language plpgsql security definer set search_path = '' as $$
 begin
   insert into public.profiles (id,display_name) values (new.id, coalesce(nullif(left(btrim(new.raw_user_meta_data->>'display_name'),30),''),'Curious human'));
   return new;
 end;
 $$;
-revoke all on function public.handle_new_user() from public, anon, authenticated;
-create trigger on_auth_user_created after insert on auth.users for each row execute procedure public.handle_new_user();
+revoke all on function rumorly_private.handle_new_user() from public, anon, authenticated;
+create trigger on_auth_user_created after insert on auth.users for each row execute procedure rumorly_private.handle_new_user();
 insert into public.profiles (id,display_name)
 select id, coalesce(nullif(left(btrim(raw_user_meta_data->>'display_name'),30),''),'Curious human') from auth.users on conflict (id) do nothing;
 
 -- Expose only totals, never another person's voting history. Definer privilege is
 -- narrowly scoped to this aggregate and explicitly repeats the story visibility rules.
-create function public.story_scores(story_ids uuid[]) returns table (story_id uuid, score bigint)
+create function rumorly_private.story_scores(story_ids uuid[]) returns table (story_id uuid, score bigint)
 language sql stable security definer set search_path = '' as $$
   select s.id, coalesce(sum(v.value),0)::bigint
   from public.stories s left join public.votes v on v.story_id = s.id
@@ -175,13 +180,20 @@ language sql stable security definer set search_path = '' as $$
     and not exists (select 1 from public.reports r where r.user_id = auth.uid() and r.story_id = s.id)
   group by s.id;
 $$;
+revoke all on function rumorly_private.story_scores(uuid[]) from public, anon;
+grant execute on function rumorly_private.story_scores(uuid[]) to authenticated;
+
+create function public.story_scores(story_ids uuid[]) returns table (story_id uuid, score bigint)
+language sql stable security invoker set search_path = '' as $$
+  select * from rumorly_private.story_scores(story_ids);
+$$;
 revoke all on function public.story_scores(uuid[]) from public, anon;
 grant execute on function public.story_scores(uuid[]) to authenticated;
 
 -- Operator-only review, initially used from the Supabase SQL editor. Mobile
 -- clients cannot invoke it, change moderation fields, or assign themselves roles.
 create function public.review_content(content_kind text, target_id uuid, decision text, note text)
-returns void language plpgsql security definer set search_path = '' as $$
+returns void language plpgsql security invoker set search_path = '' as $$
 begin
   if decision not in ('published','rejected','removed') or decision is null then raise exception 'Invalid decision'; end if;
   if note is null or char_length(btrim(note)) not between 1 and 1000 then raise exception 'A review reason is required'; end if;

@@ -5,6 +5,8 @@ import { Platform } from 'react-native';
 
 const url = process.env.EXPO_PUBLIC_SUPABASE_URL;
 const key = process.env.EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
+// Enable only after the hosted email-code template and delivery are configured.
+export const emailCodesReady = process.env.EXPO_PUBLIC_AUTH_EMAIL_CODES_READY === 'true';
 
 // Missing configuration keeps the standalone fictional demo usable.
 export const supabase = url && key ? createClient(url, key, {
