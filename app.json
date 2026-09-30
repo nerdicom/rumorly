@@ -1,0 +1,41 @@
+{
+  "expo": {
+    "name": "Rumorly",
+    "slug": "rumorly",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "app.rumorly.mobile"
+    },
+    "android": {
+      "package": "app.rumorly.mobile",
+      "adaptiveIcon": {
+        "backgroundColor": "#35202F",
+        "foregroundImage": "./assets/adaptive-icon.png"
+      },
+      "predictiveBackGestureEnabled": true
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro",
+      "output": "single",
+      "name": "Rumorly"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-font",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#FAF7F2",
+          "image": "./assets/icon.png",
+          "imageWidth": 110
+        }
+      ]
+    ],
+    "scheme": "rumorly"
+  }
+}
