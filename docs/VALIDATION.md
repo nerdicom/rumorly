@@ -48,7 +48,7 @@ The browser auth tests sent **no real email** and performed **no hosted writes**
 - Captured the actual table-security result in `previews/supabase-tables.jpg`.
 - With email readiness disabled, the account screen showed the setup notice and no code-request button. The full fictional demo smoke flow, 320px overflow check, typecheck, lint, and all-platform exports passed again.
 
-The email template step is blocked by the project's default SMTP/free-tier restriction. No email-provider credentials are configured. The app's email-code readiness flag remains false so it cannot request a code while Supabase sends only the default magic link. No real sign-in email or app-user creation was performed. Earlier mock account-flow results remain valid for the enabled feature; real-device/email-delivery checks are still outstanding.
+At this deployment checkpoint, email templates were blocked by the project's default SMTP/free-tier restriction. That configuration blocker was resolved in the Resend setup below. The app's email-code readiness flag remains false until actual delivery is verified. No real sign-in email or app-user creation was performed. Earlier mock account-flow results remain valid for the enabled feature; real-device/email-delivery checks are still outstanding.
 
 ## Expo project linkage — September 29, 2026 (Denver)
 
@@ -63,3 +63,14 @@ The resolved public Expo configuration reports the expected owner, slug, project
 - Chromium rendered onboarding, feed, and discover at 390 x 844. The texture loaded in every image instance, onboarding and search navigation remained usable, and no browser runtime errors occurred. Discover had no horizontal overflow at 320px. Reviewed all three screenshots visually.
 - `previews/feed-tie-dye.png` is the actual exported app rendering. The updated theme has not yet been verified on the user's iPhone; their downloaded preview needs the new source/assets first.
 - The user reported that Expo browser login worked after Windows global tunnel-module resolution and a waiting terminal login prompt were resolved. Documented the browser-login and local tunnel-helper steps in README.
+
+## Resend SMTP and email-code templates — September 30, 2026 (Denver)
+
+- Verified `rumorly.app` in the signed-in Resend dashboard: domain, DKIM, and sending records were marked Verified. Existing DNS was not changed.
+- With explicit user approval, created `Rumorly Supabase Auth` with Sending access limited to `rumorly.app` and saved it in Supabase's encrypted SMTP password setting. No secret was written to the repository, logs, or app environment.
+- Supabase confirmed the SMTP update. A fresh dashboard load showed custom SMTP enabled, sender `Rumorly <no-reply@rumorly.app>`, host `smtp.resend.com`, port 465, interval 60 seconds, and a stored hidden password.
+- Saved both Magic link or OTP and Confirm sign up with subject `Your Rumorly sign-in code` and the repository's `{{ .Token }}` template. Supabase reported success, and the signup preview displayed the expected code layout.
+- Captured `previews/resend-smtp.jpg` and `previews/email-code-template.jpg`. These show saved configuration/template preview, not a delivery receipt.
+- Typecheck and lint passed again. No application code changed during this setup.
+
+Actual delivery, code verification, and two-account/native checks remain pending. No email was sent and no hosted app user was created during this configuration. The readiness flag stays false pending that test.

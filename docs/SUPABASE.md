@@ -6,7 +6,11 @@ Project: `qkdznbbecplknjopgpax` at https://qkdznbbecplknjopgpax.supabase.co.
 
 The migration was applied successfully through the Supabase SQL editor on September 29, 2026 (America/Denver). The hosted database now has all eight application tables with RLS enabled; anonymous SELECT is denied on every table. Live REST requests to stories and reports returned the expected permission denial. Supabase Security Advisor was rerun: **zero errors, zero warnings**, and one informational note for the intentionally operator-only `moderation_actions` table (RLS enabled with no client policy).
 
-**Email delivery remains unconfigured.** This new free project uses default SMTP, and the dashboard explicitly requires custom SMTP before email templates can be edited. The current default Magic Link email sends a link, not the code the app expects. The app therefore keeps new account sign-in unavailable until `EXPO_PUBLIC_AUTH_EMAIL_CODES_READY=true` is set after SMTP and the code templates are configured. Guest/demo mode remains usable.
+**Resend SMTP and both email-code templates are configured as of September 30, 2026 (America/Denver).** `rumorly.app` is verified for sending. Supabase uses `Rumorly <no-reply@rumorly.app>`, `smtp.resend.com:465`, username `resend`, and a sending-only key restricted to `rumorly.app`. The key is stored only in Supabase's encrypted SMTP configuration, never in this repository or the mobile app. The saved settings were checked after reloading the dashboard.
+
+Both **Magic link or OTP** and **Confirm sign up** now use subject `Your Rumorly sign-in code` and the exact body in `supabase/templates-email-code.html`, including `{{ .Token }}`. Supabase confirmed both template saves. The per-user send interval is 60 seconds; enabling custom SMTP sets the initial hourly email limit to 30.
+
+**Actual email delivery and account sign-in still need a test.** No test message or app account was created during this configuration. `EXPO_PUBLIC_AUTH_EMAIL_CODES_READY` remains `false` until delivery is verified. Guest/demo mode remains usable. Configuration and template evidence are in `docs/previews/resend-smtp.jpg` and `docs/previews/email-code-template.jpg`.
 
 The Supabase plugin is installed but its SQL actions were not exposed to the assistant; the authorized browser fallback was used. No app users, seed content, billing, or paid services were created.
 The repository contains the mobile integration and the exact tested, applied migration. The Next.js `@supabase/ssr`, cookie middleware, and `NEXT_PUBLIC_` variables do not apply to this Expo app.
@@ -45,7 +49,7 @@ The app uses passwordless email codes for account creation and sign-in. No redir
 
 First configure a transactional email provider in **Authentication → Emails → SMTP Settings**. New free projects cannot customize the default-provider templates. Then in **Authentication → Emails → Templates**, use `supabase/templates-email-code.html` for **Magic Link** and **Confirm signup**. The essential variable is `{{ .Token }}`. The app accepts 6–8 digits, handles expired/invalid codes, and enforces a local 60-second resend wait in addition to Supabase's server limits. Keep email confirmation enabled. After saving both templates and confirming delivery, set `EXPO_PUBLIC_AUTH_EMAIL_CODES_READY=true` in the app environment and rebuild/restart Expo.
 
-Supabase's default mail service restricts delivery to authorized team addresses and has low rate limits. Use a project-team email for initial testing or configure a production SMTP provider before inviting other testers. No real sign-in emails were sent by the automated tests.
+This project's custom Resend SMTP is now configured, so the default mail service's project-team-only recipient restriction no longer applies. Confirm successful delivery to an explicitly authorized test address before inviting testers or enabling the readiness flag. No real sign-in emails were sent by the automated tests.
 
 Free-tier template restriction: https://supabase.com/changelog/46599-changes-to-email-template-customisation-on-free-tier
 
