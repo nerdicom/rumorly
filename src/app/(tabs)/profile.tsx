@@ -2,12 +2,14 @@ import { router } from 'expo-router';
 import React, { useState } from 'react';
 import { Text, TextInput, View } from 'react-native';
 import { Badge, Button, Icon, Notice, Page } from '../../components/ui';
-import { TieDyePanel } from '../../components/TieDye';
+import { ThemeSwitch } from '../../components/ThemeSwitch';
+import { FeaturePanel } from '../../components/FeaturePanel';
 import { useApp } from '../../store/AppStore';
 import { useAuth } from '../../store/AuthStore';
-import { c, s } from '../../theme';
+import { useTheme } from '../../theme';
 
 export default function Profile() {
+  const { c, s } = useTheme();
   const { state, dispatch, mode, busy, refresh, blockedNames } = useApp();
   const { user, signOut } = useAuth();
   const [name, setName] = useState(state.displayName);
@@ -15,11 +17,12 @@ export default function Profile() {
   const [resetting, setResetting] = useState(false);
   return <Page>
     <Text style={s.label}>YOUR LITTLE CORNER</Text>
-    <View style={[s.row, { gap: 16 }]}><View style={{ width: 72, height: 72, borderRadius: 25, backgroundColor: c.rose, alignItems: 'center', justifyContent: 'center' }}><Icon name="person-outline" color={c.accent} size={33} /></View><View style={{ flex: 1 }}><Text style={s.h2}>{state.displayName}</Text><Text style={s.small}>{mode === 'demo' ? 'Curious by nature · Demo profile' : 'Your community account'}</Text></View></View>
+    <View style={[s.row, { gap: 16 }]}><View style={{ width: 72, height: 72, borderRadius: 25, backgroundColor: c.accentSoft, alignItems: 'center', justifyContent: 'center' }}><Icon name="person-outline" color={c.accent} size={33} /></View><View style={{ flex: 1 }}><Text style={s.h2}>{state.displayName}</Text><Text style={s.small}>{mode === 'demo' ? 'Curious by nature · Demo profile' : 'Your community account'}</Text></View></View>
     {editing ? <View style={{ gap: 10 }}><TextInput accessibilityLabel="Display name" maxLength={30} value={name} onChangeText={setName} style={s.input} /><Button label="Save name" small disabled={busy} onPress={async () => { if (await dispatch({ type: 'name', name })) setEditing(false); }} /></View> : <Button label="Edit display name" small secondary onPress={() => { setName(state.displayName); setEditing(true); }} />}
     {mode === 'demo' ? <Button label="Sign in or create an account" onPress={() => router.push('/auth')} /> : <><Text style={s.small}>{user?.email}</Text><Button label="Refresh account" secondary disabled={busy} onPress={refresh} /></>}
+    <View style={s.card}><Text style={s.label}>APPEARANCE</Text><ThemeSwitch /></View>
     <View style={[s.card, s.between]}>{[[String(state.follows.length), 'Following'], [String(Object.keys(state.votes).length), 'Reactions'], [String(state.submissions.length), 'Submissions']].map(([count, label]) => <View key={label} style={{ alignItems: 'center', flex: 1, gap: 5 }}><Text style={s.h2}>{count}</Text><Text style={s.small}>{label}</Text></View>)}</View>
-    <TieDyePanel><View style={s.between}><Text style={s.label}>FOR THE EXTRA CURIOUS</Text><Icon name="sparkles-outline" color={c.pink} /></View><Text style={s.h2}>Meet Rumorly Plus.</Text><Text style={s.body}>More ways to follow the conversation. Every vote still counts the same.</Text><Button label="Explore the planned perks" secondary onPress={() => router.push('/plus')} /></TieDyePanel>
+    <FeaturePanel><View style={s.between}><Text style={s.label}>FOR THE EXTRA CURIOUS</Text><Icon name="sparkles-outline" color={c.accent} /></View><Text style={s.h2}>Meet Rumorly Plus.</Text><Text style={s.body}>More ways to follow the conversation. Every vote still counts the same.</Text><Button label="Explore the planned perks" secondary onPress={() => router.push('/plus')} /></FeaturePanel>
     <Text style={s.h3}>Your submissions</Text>
     {state.submissions.length ? state.submissions.map(item => <View key={item.id} style={s.card}><Badge status={item.status} /><Text style={s.h3}>{item.title}</Text><Text style={s.body}>{item.body}</Text><Text style={s.small}>{item.topic} · {mode === 'demo' ? 'Saved locally, not published' : item.status === 'pending' ? 'Awaiting review' : 'Review complete'}</Text></View>) : <Text style={s.body}>{mode === 'demo' ? 'Nothing spilled yet. Your demo submissions will appear here.' : 'Your submissions and their review status will appear here.'}</Text>}
     {state.contexts.length > 0 && <><Text style={s.h3}>Your added context</Text>{state.contexts.map(item => <View key={item.id} style={s.card}><Badge status={item.status} /><Text style={s.body}>{item.body}</Text><Text style={s.small}>{mode === 'demo' ? 'Saved locally, not reviewed or published' : item.status === 'pending' ? 'Awaiting review' : 'Review complete'}</Text></View>)}</>}

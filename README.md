@@ -4,12 +4,13 @@
 
 An Expo + React Native mobile app for following the conversation and the context behind it. This repository contains an interactive fictional demo and a Supabase account/community integration for early testing. It is not a launched public service.
 
-<img src="docs/previews/feed-tie-dye.png" alt="Rumorly mobile feed with its rainbow tie-dye theme" width="390" />
+<img src="docs/previews/feed-light.png" alt="Rumorly feed in light mode" width="320" /> <img src="docs/previews/feed-dark.png" alt="Rumorly feed in dark mode" width="320" />
 
-The default visual identity is full-spectrum rainbow tie-dye, with light reading surfaces and deep violet controls. See [design notes](docs/DESIGN.md).
+The app uses a clean violet palette with light and dark modes. Use the header switch or **You → Appearance**; your choice stays saved on this device. The tie-dye design has been completely replaced. See [design notes](docs/DESIGN.md).
 
 ## What works
 
+- Persistent light/dark appearance, including forms, navigation, and native status-bar colors.
 - Adult-preview acknowledgment and community guidelines.
 - Feed with topic filters and hot/latest sorting; text search.
 - Heat up / cool down: one changeable vote, never a truth score.

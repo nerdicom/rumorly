@@ -1,9 +1,10 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 import { Page } from '../components/ui';
-import { s } from '../theme';
+import { useTheme } from '../theme';
 import { useApp } from '../store/AppStore';
 export default function Guidelines() {
+  const { s } = useTheme();
   const { mode } = useApp();
   return <Page back title="Community guidelines"><Text style={s.h1}>Curious.{ '\n' }Not cruel.</Text>{[
     ['Keep it public', 'Discuss public entertainment stories. No private contact details, private messages, intimate material, or identifying private individuals.'],

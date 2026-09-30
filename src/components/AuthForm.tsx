@@ -2,10 +2,12 @@ import React, { useRef, useState } from 'react';
 import { Pressable, Text, TextInput, View } from 'react-native';
 import { friendlyError } from '../lib/errors';
 import { emailCodesReady, requireSupabase, supabase } from '../lib/supabase';
-import { c, s } from '../theme';
+import { ThemeSwitch } from './ThemeSwitch';
+import { useTheme } from '../theme';
 import { Brand, Button, Icon, Notice, Page } from './ui';
 
 export function AuthForm({ onBack }: { onBack: () => void }) {
+  const { c, s } = useTheme();
   const [creating, setCreating] = useState(false);
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
@@ -45,7 +47,7 @@ export function AuthForm({ onBack }: { onBack: () => void }) {
     finally { working.current = false; setBusy(false); }
   };
   return <Page>
-    <Brand /><Text style={s.label}>YOUR SEAT AT THE TABLE</Text>
+    <View style={s.between}><Brand /><ThemeSwitch compact /></View><Text style={s.label}>YOUR SEAT AT THE TABLE</Text>
     <Text style={s.h1}>{sentTo ? 'Check your inbox.' : creating ? 'A little curious?' : 'Welcome back.'}</Text>
     {!supabase || !emailCodesReady ? <Notice>Account sign-in is being set up. You can still explore the fictional demo.</Notice> : <>
       {sentTo ? <>

@@ -4,9 +4,10 @@ import { Pressable, Text, TextInput, View } from 'react-native';
 import { Button, Empty, Icon, Notice, Page } from '../../components/ui';
 import { reportReasons, type Report } from '../../domain/types';
 import { useApp } from '../../store/AppStore';
-import { c, s } from '../../theme';
+import { useTheme } from '../../theme';
 
 export default function ReportStory() {
+  const { c, s } = useTheme();
   const { id } = useLocalSearchParams<{ id: string }>();
   const { dispatch, stories, mode, busy } = useApp();
   const story = stories.find(item => item.id === id);

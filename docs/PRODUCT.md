@@ -38,7 +38,7 @@ Initial entertainment community; moderator dashboard and auth email delivery; mo
 
 ## Visual identity — September 30, 2026 (Denver)
 
-The user selected full-spectrum rainbow tie-dye as the dominant app color scheme. Use the bundled multicolor textile texture across screen backgrounds, feature panels, story-card accents, and navigation. Keep story/form surfaces light with dark plum text and deep violet controls so color never interferes with reading or status labels. This is the default identity, not a paid profile theme.
+The user replaced the earlier tie-dye direction completely with a clean color scheme and a persistent light/dark switch. Use soft white and violet for light mode, charcoal and lavender for dark mode, and solid surfaces throughout. Appearance is a free device preference available before and after sign-in; it survives account changes and demo reset. Do not reintroduce rainbow textures. See DESIGN.md for tokens and behavior.
 
 ## Source policies checked at project inception
 

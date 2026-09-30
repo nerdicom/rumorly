@@ -61,7 +61,7 @@ The resolved public Expo configuration reports the expected owner, slug, project
 - Applied the requested all-color tie-dye texture to shared page backgrounds, feature panels, story accents, and tab navigation. The texture is bundled locally as a 359 KB JPEG; no new runtime dependencies are needed.
 - Typecheck and Expo lint passed. Final iOS, Android, and web production JavaScript/asset exports passed.
 - Chromium rendered onboarding, feed, and discover at 390 x 844. The texture loaded in every image instance, onboarding and search navigation remained usable, and no browser runtime errors occurred. Discover had no horizontal overflow at 320px. Reviewed all three screenshots visually.
-- `previews/feed-tie-dye.png` is the actual exported app rendering. The updated theme has not yet been verified on the user's iPhone; their downloaded preview needs the new source/assets first.
+- The historical tie-dye preview was an actual exported app rendering; it has been removed from the current tree as part of the later redesign. The updated theme has not yet been verified on the user's iPhone; their downloaded preview needs the new source/assets first.
 - The user reported that Expo browser login worked after Windows global tunnel-module resolution and a waiting terminal login prompt were resolved. Documented the browser-login and local tunnel-helper steps in README.
 
 ## Resend SMTP and email-code templates — September 30, 2026 (Denver)
@@ -84,3 +84,14 @@ At the configuration-only checkpoint, actual delivery, code verification, and tw
 - Typecheck and lint passed. No runtime application code changed.
 
 Recipient confirmation, actual code verification, and real two-account/native behavior checks remain pending.
+
+## Light/dark redesign — September 30, 2026 (Denver)
+
+- The user reported that sign-in works, then requested complete replacement of tie-dye and a light/dark switch. Replaced the textile with solid violet/neutral surfaces and removed the textile asset/component from the current app. Older tie-dye screenshots refer to the historical design, not the current UI.
+- Converted all screens and shared controls to reactive palette tokens; added a persistent native switch to the feed, profile, onboarding, and auth. Included native appearance/status-bar/root background configuration through the SDK 57-compatible `expo-system-ui` package.
+- Typecheck and lint passed without errors or lint warnings. All 20 existing unit/PostgreSQL test results passed. A clean Metro build exported iOS, Android, and web successfully.
+- Chromium at 390 × 844 verified light/dark rendering, preference persistence across reload/navigation/demo reset, repeated toggles, and preservation of votes, follows, and an unsaved profile name. Visited discover, posting, following, story, reporting, Plus, guidelines, and the enabled email sign-in form in dark mode; no real emails or hosted mutations were performed in these browser checks.
+- Verified first-launch system dark preference and usable switching with explicit errors when preference reads/writes fail. No browser runtime errors occurred.
+- Feed/search had no page-level horizontal overflow at 320px in either theme. Reviewed actual feed, profile, posting, and auth screenshots. New previews: `previews/feed-light.png`, `previews/feed-dark.png`, and `previews/profile-dark.png`.
+- Checked primary/supporting/button/status text token pairs: minimum contrast 4.82:1 in light mode and 6.35:1 in dark mode. This is a token-level check, not a full accessibility audit.
+- Final Expo configuration resolves SDK 57, automatic appearance, and the SystemUI plugin. Native status-bar/keyboard appearance and the new theme still need verification on the user's iPhone after updating their local preview; no signed native build was produced.
