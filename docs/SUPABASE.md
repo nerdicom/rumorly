@@ -10,9 +10,9 @@ The migration was applied successfully through the Supabase SQL editor on Septem
 
 Both **Magic link or OTP** and **Confirm sign up** now use subject `Your Rumorly sign-in code` and the exact body in `supabase/templates-email-code.html`, including `{{ .Token }}`. Supabase confirmed both template saves. The per-user send interval is 60 seconds; enabling custom SMTP sets the initial hourly email limit to 30.
 
-**Actual email delivery and account sign-in still need a test.** No test message or app account was created during this configuration. `EXPO_PUBLIC_AUTH_EMAIL_CODES_READY` remains `false` until delivery is verified. Guest/demo mode remains usable. Configuration and template evidence are in `docs/previews/resend-smtp.jpg` and `docs/previews/email-code-template.jpg`.
+**Test email delivery is verified.** On September 30, 2026, Supabase accepted two explicitly authorized sign-in-code requests, and Resend marked both Delivered, including the user's subsequently selected Gmail address. Recipient addresses and codes are not recorded in this public repository. This verifies delivery to the receiving mail servers; inbox placement and entering a valid code in the app remain to be checked by the recipient. `.env.example` now enables `EXPO_PUBLIC_AUTH_EMAIL_CODES_READY=true`; existing installations must update their own `.env` and restart Expo. Guest/demo mode remains usable. Configuration and template evidence are in `docs/previews/resend-smtp.jpg` and `docs/previews/email-code-template.jpg`.
 
-The Supabase plugin is installed but its SQL actions were not exposed to the assistant; the authorized browser fallback was used. No app users, seed content, billing, or paid services were created.
+The Supabase plugin is installed but its SQL actions were not exposed to the assistant; the authorized browser fallback was used for configuration. The delivery test requested account creation for the two authorized email addresses; no code was read or redeemed by the assistant. No seed content, billing, or paid service subscription was created.
 The repository contains the mobile integration and the exact tested, applied migration. The Next.js `@supabase/ssr`, cookie middleware, and `NEXT_PUBLIC_` variables do not apply to this Expo app.
 
 ## Configure the app
@@ -41,7 +41,7 @@ Every table has row-level security enabled. Explicit column grants prevent chang
 
 The public `story_scores` RPC is an invoker wrapper over a narrowly scoped private aggregate. Privileged helpers and the profile-creation trigger live in the unexposed `rumorly_private` schema with pinned search paths and restricted execution. The aggregate and report lookup validate the authenticated caller. The public operator review function uses invoker permissions and is unavailable to mobile users.
 
-No seed stories or test accounts are created in the hosted project. The fictional demo remains separate.
+The migration creates no seed stories or test accounts. The later email-delivery test requested two unconfirmed accounts, without asserting adult acknowledgment or accepting community terms on anyone's behalf. The fictional demo remains separate.
 
 ## Configure email codes
 
@@ -49,7 +49,7 @@ The app uses passwordless email codes for account creation and sign-in. No redir
 
 First configure a transactional email provider in **Authentication → Emails → SMTP Settings**. New free projects cannot customize the default-provider templates. Then in **Authentication → Emails → Templates**, use `supabase/templates-email-code.html` for **Magic Link** and **Confirm signup**. The essential variable is `{{ .Token }}`. The app accepts 6–8 digits, handles expired/invalid codes, and enforces a local 60-second resend wait in addition to Supabase's server limits. Keep email confirmation enabled. After saving both templates and confirming delivery, set `EXPO_PUBLIC_AUTH_EMAIL_CODES_READY=true` in the app environment and rebuild/restart Expo.
 
-This project's custom Resend SMTP is now configured, so the default mail service's project-team-only recipient restriction no longer applies. Confirm successful delivery to an explicitly authorized test address before inviting testers or enabling the readiness flag. No real sign-in emails were sent by the automated tests.
+This project's custom Resend SMTP is configured and delivery to authorized test addresses is verified. The default mail service's project-team-only recipient restriction no longer applies. Automated unit/browser tests send no real emails; the separate user-authorized delivery check did.
 
 Free-tier template restriction: https://supabase.com/changelog/46599-changes-to-email-template-customisation-on-free-tier
 
@@ -67,7 +67,7 @@ The review queue is stored in the database; an operator uses the SQL editor init
 
 ## Validation and remaining work
 
-`npm test` runs actual PostgreSQL behavior in PGlite, including grants, RLS, private data boundaries, duplicate/weighted votes, moderator-only publication, and blocked/reported/removed content. This tests database behavior locally. Hosted table security, anonymous-access denial, and the security advisor were also checked after deployment; real two-account auth testing awaits email delivery.
+`npm test` runs actual PostgreSQL behavior in PGlite, including grants, RLS, private data boundaries, duplicate/weighted votes, moderator-only publication, and blocked/reported/removed content. This tests database behavior locally. Hosted table security, anonymous-access denial, and the security advisor were also checked after deployment. Email delivery is now verified; real code verification and two-account behavior testing remain outstanding.
 
 Browser tests with mocked Supabase responses cover signup acknowledgment, code errors/resend limits, session restoration, shared mutations, failed-save input retention, and sign-out isolation. Typecheck, lint, and all-platform JavaScript exports are also required.
 

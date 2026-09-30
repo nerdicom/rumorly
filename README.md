@@ -23,7 +23,7 @@ The default visual identity is full-spectrum rainbow tie-dye, with light reading
 - Rumorly Plus concept screen; no purchases or billing.
 - Shared iOS, Android, and web components, plus CI checks.
 
-All demo stories, programs, and accounts are fictional. Guest actions stay on the device. Signed-in actions use Supabase; stories/context stay pending until approved, and reports enter a private database queue. The database migration is deployed. Email delivery/templates must be configured before account testing; see [SUPABASE.md](docs/SUPABASE.md) for the verified setup status and exact steps. No billing or push service is active.
+All demo stories, programs, and accounts are fictional. Guest actions stay on the device. Signed-in actions use Supabase; stories/context stay pending until approved, and reports enter a private database queue. The database migration and email-code templates are deployed, and Resend confirmed test delivery. Account sign-in is enabled in the example environment; existing installations must update their readiness flag and restart Expo. See [SUPABASE.md](docs/SUPABASE.md) for the verified setup status and remaining account tests. No billing or push service is active.
 
 ## Run on your phone
 
@@ -61,7 +61,7 @@ See [VALIDATION.md](docs/VALIDATION.md) for the initial validation results and r
 
 `app.json` points to the existing Expo project `@nerdicom/rumorly`, ID `ac6cf278-9e81-448b-987a-b4bf117d6dea`, copied from the owner's Expo project details. The dashboard shows the GitHub repository linked. `eas.json` includes internal-preview and production profiles with explicit platform build images for GitHub builds.
 
-No signed native build has run yet. Verify the provisional app identifiers in `app.json`, sign in with `npx eas-cli@latest login`, and configure signing credentials for the intended platform. Expo's [GitHub build guide](https://docs.expo.dev/build/building-from-github/) requires a successful CLI build for each platform before subsequent GitHub builds. For example, `npx eas-cli@latest build --platform android --profile preview` creates an installable Android preview after signing setup. Configure the public Supabase variables in EAS before account testing; email sign-in remains gated until SMTP/templates and delivery are verified. Do not submit this demo to app stores as a finished service.
+No signed native build has run yet. Verify the provisional app identifiers in `app.json`, sign in with `npx eas-cli@latest login`, and configure signing credentials for the intended platform. Expo's [GitHub build guide](https://docs.expo.dev/build/building-from-github/) requires a successful CLI build for each platform before subsequent GitHub builds. For example, `npx eas-cli@latest build --platform android --profile preview` creates an installable Android preview after signing setup. Configure the public Supabase variables in EAS before account testing; set EXPO_PUBLIC_AUTH_EMAIL_CODES_READY=true for this verified project; a different project must verify its own SMTP/templates and delivery first. Do not submit this demo to app stores as a finished service.
 
 ## Project map
 

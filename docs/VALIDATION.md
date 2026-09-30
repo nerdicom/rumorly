@@ -73,4 +73,14 @@ The resolved public Expo configuration reports the expected owner, slug, project
 - Captured `previews/resend-smtp.jpg` and `previews/email-code-template.jpg`. These show saved configuration/template preview, not a delivery receipt.
 - Typecheck and lint passed again. No application code changed during this setup.
 
-Actual delivery, code verification, and two-account/native checks remain pending. No email was sent and no hosted app user was created during this configuration. The readiness flag stays false pending that test.
+At the configuration-only checkpoint, actual delivery, code verification, and two-account/native checks remained pending. The later delivery test below resolves email delivery.
+
+## Authorized email delivery — September 30, 2026 (Denver)
+
+- Sent one Supabase sign-in-code request to the address the user first supplied. After the user supplied a replacement Gmail address, sent one request to that exact address too. Both requests returned success; no further messages were sent.
+- Resend's sending log marked both messages **Delivered** with subject `Your Rumorly sign-in code`. This establishes acceptance by the receiving mail servers, not inbox placement or successful account sign-in.
+- Enabled `EXPO_PUBLIC_AUTH_EMAIL_CODES_READY=true` in `.env.example` and the local ignored `.env`. Existing phone-preview installations need the same environment change and an Expo restart.
+- Kept recipient addresses and the private delivery screenshot out of this repository. Did not read, copy, or redeem either one-time code. The account-creation requests contained no invented adult acknowledgment or community-terms acceptance.
+- Typecheck and lint passed. No runtime application code changed.
+
+Recipient confirmation, actual code verification, and real two-account/native behavior checks remain pending.
