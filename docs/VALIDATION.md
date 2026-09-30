@@ -49,3 +49,9 @@ The browser auth tests sent **no real email** and performed **no hosted writes**
 - With email readiness disabled, the account screen showed the setup notice and no code-request button. The full fictional demo smoke flow, 320px overflow check, typecheck, lint, and all-platform exports passed again.
 
 The email template step is blocked by the project's default SMTP/free-tier restriction. No email-provider credentials are configured. The app's email-code readiness flag remains false so it cannot request a code while Supabase sends only the default magic link. No real sign-in email or app-user creation was performed. Earlier mock account-flow results remain valid for the enabled feature; real-device/email-delivery checks are still outstanding.
+
+## Expo project linkage — September 29, 2026 (Denver)
+
+Copied the project ID `ac6cf278-9e81-448b-987a-b4bf117d6dea`, owner `nerdicom`, and slug `rumorly` from the user's Expo project-details screenshot into `app.json`. The user's dashboard screenshot also shows `nerdicom/rumorly` linked on GitHub. Added explicit Android/iOS build images to the existing EAS profiles as required by Expo's GitHub build guide.
+
+The resolved public Expo configuration reports the expected owner, slug, project ID, and SDK 57. Typecheck and lint passed again. This verifies configuration only: no EAS account authentication, signing credentials, native cloud build, or store submission was performed by these checks.

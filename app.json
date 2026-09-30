@@ -2,6 +2,12 @@
   "expo": {
     "name": "Rumorly",
     "slug": "rumorly",
+    "owner": "nerdicom",
+    "extra": {
+      "eas": {
+        "projectId": "ac6cf278-9e81-448b-987a-b4bf117d6dea"
+      }
+    },
     "version": "0.1.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

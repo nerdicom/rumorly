@@ -54,7 +54,9 @@ See [VALIDATION.md](docs/VALIDATION.md) for the initial validation results and r
 
 ## Build a preview binary later
 
-An `eas.json` with internal-preview and production profiles is included. After choosing an Expo account, verify the provisional app identifiers in `app.json`, run `npx eas-cli@latest login`, then `npx eas-cli@latest build:configure`. The Expo project ID and signing credentials must be established before builds. Do not submit this demo to app stores as a finished service.
+`app.json` points to the existing Expo project `@nerdicom/rumorly`, ID `ac6cf278-9e81-448b-987a-b4bf117d6dea`, copied from the owner's Expo project details. The dashboard shows the GitHub repository linked. `eas.json` includes internal-preview and production profiles with explicit platform build images for GitHub builds.
+
+No signed native build has run yet. Verify the provisional app identifiers in `app.json`, sign in with `npx eas-cli@latest login`, and configure signing credentials for the intended platform. Expo's [GitHub build guide](https://docs.expo.dev/build/building-from-github/) requires a successful CLI build for each platform before subsequent GitHub builds. For example, `npx eas-cli@latest build --platform android --profile preview` creates an installable Android preview after signing setup. Configure the public Supabase variables in EAS before account testing; email sign-in remains gated until SMTP/templates and delivery are verified. Do not submit this demo to app stores as a finished service.
 
 ## Project map
 
